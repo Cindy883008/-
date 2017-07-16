@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <style >
+        #ul li{
+            display:inline-block;
+            background-color:#F00;
+            color:#000;
+            margin:4px;
+            padding:1px;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <input type="text" id="input" placeholder="请输入数字"   />
+    <button type="button" id="leftin">左侧入</button>&nbsp;
+    <button type="button" id="rightin">右侧入</button>&nbsp;&nbsp;&nbsp;
+    <button type="button" id="leftout">左侧出</button>&nbsp;
+    <button type="button" id="rightout">右侧出</button>
+</div>
+<div>
+    <ul id="ul">  </ul>
+</div>
+
+<script type="text/javascript">
+    /*
+     获得每个按钮的id
+     */
+    var input = document.getElementById('input');
+    var leftin = document.getElementById('leftin');
+    var rightin = document.getElementById('rightin');
+    var leftout = document.getElementById('leftout');
+    var rightout = document.getElementById('rightout');
+    var ul = document.getElementById('ul');
+    var arr =new Array();// 创建一个空数组
+    /*
+     inleft()
+     点击左侧入，将input 的数据从左侧插入
+     */
+    function inleft(){
+        if(input.value !== '' && !isNaN(input.value)  ){
+            var num =input.value;
+            arr.unshift(num);//从数组的前端插入数据
+            var li=document.createElement('li');
+            li.innerHTML = arr[0];
+            ul.insertBefore(li,ul.childNodes[0]);
+            input.value = '';
+        }
+    }
+    /*
+     inright()
+     点击右侧入，将input 的数据从右侧插入数据
+     */
+    function inright(){
+        if(input.value !== '' && !isNaN(input.value)){
+            var num =input.value;
+            arr.push(num);
+            var li=document.createElement('li');
+            li.innerHTML = arr[arr.length-1];
+            ul.appendChild(li);
+            input.value = '';
+        }
+    }
+    /*
+     outleft()
+     点击左侧出，将数据从左端删除
+     */
+    function outleft(){
+
+        alert(ul.childNodes[0].innerHTML);
+        //var num =input.value;
+        arr.shift(ul.childNodes[0].innerHTML);
+        ul.removeChild(ul.childNodes[0]);
+        input.value = '';
+    }
+    /*
+     outright()
+     点击右侧出，将数据从右端删除
+     */
+    function outright(){
+        alert(ul.lastChild.innerHTML);
+        //var num =input.value;
+        arr.pop(ul.lastChild.innerHTML);
+        ul.removeChild(ul.lastChild);
+        input.value = '';
+    }
+    function run(){
+        leftin.onclick = function(){
+            inleft();
+        }
+
+        rightin.onclick = function(){
+            inright();
+        }
+        leftout.onclick = function(){
+            outleft();
+        }
+        rightout.onclick = function(){
+            outright();
+        }
+        /*
+         点击列表中元素，则删除该元素，用的事件委托
+         */
+        ul.onclick = function (e) {
+            e = e || window.event;
+            var t = e.target || e.srcElement;  //t:目标对象
+            var tagName = t.tagName;　//tagName标签名称
+            if (tagName == 'LI') {
+                ul.removeChild(t);
+            }
+        }
+    }
+    run();
+</script>
+</body>
+</html>

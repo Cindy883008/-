@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <style >
+        #ul li{
+            display:inline-block;
+            background-color:#F00;
+            color:#000;
+            margin:4px;
+            padding:1px;
+            width:20px;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <input type="text" id="input" placeholder="请输入数字"   />
+    <button type="button" id="leftin">左侧入</button>&nbsp;
+    <button type="button" id="rightin">右侧入</button>&nbsp;&nbsp;&nbsp;
+    <button type="button" id="leftout">左侧出</button>&nbsp;
+    <button type="button" id="rightout">右侧出</button>
+</div>
+<div>
+    <ul id="ul">  </ul>
+</div>
+
+<script type="text/javascript">
+
+    //或者每个元素
+    var Input=document.querySelector("input");
+    var btn=document.getElementsByTagName("button");
+    var ul=document.getElementById("ul");
+
+
+    //给每个按钮绑定单机事件
+
+    //左侧入
+    function leftIn(){
+        if(Input.value=="") alert("请输入数字");
+        else if(!isNaN(Input.value)&&(Input.value>=10&&Input.value<=100)){
+            var li=document.createElement("li");
+            li.style.height=Input.value+"px";
+            ul.insertBefore(li,ul.children[0]);
+        }
+        else{
+            alert("输入的数字在10-100之间");
+        }
+    }
+    //右侧入
+
+    //最多队列数为60个
+
+
+
+    function RightIn(){
+        if(Input.value=="") alert("请输入数字");
+        else if(!isNaN(Input.value)){
+            var li=document.createElement("li");
+            li.style.height=Input.value+"px";
+            ul.appendChild(li);
+
+        }
+        else{
+            alert("格式不对");
+        }
+    }
+
+
+
+
+    //左侧出
+    function removeLeft(){
+        if(confirm("删除吗"))
+            ul.removeChild(ul.firstChild);
+        else alert("取消删除");
+    }
+
+    function removeRight(){
+        if(confirm("删除吗"))
+            ul.removeChild(ul.lastElementChild);
+        else alert("取消删除");
+    }
+
+    function run() {
+        btn[0].onclick = function () {
+            leftIn();
+        }
+
+        btn[1].onclick = function () {
+            RightIn();
+        }
+
+        btn[2].onclick = function () {
+            removeLeft();
+        }
+
+        btn[3].onclick = function () {
+            removeRight();
+        }
+
+    }
+
+    run();
+
+    //冒泡事件
+
+    ul.onclick=function(e){
+        if(e.target.nodeName=="LI"){
+            ul.removeChild(e.target);
+        }
+    }
+
+    //实现简单的排序
+
+
+</script>
+</body>
+</html>

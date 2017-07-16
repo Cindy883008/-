@@ -1,0 +1,43 @@
+body{	
+	padding:50px;
+}
+
+table{
+	margin-bottom: 30px;
+}
+
+table thead{
+	background: black;
+	color:#fff;
+}
+
+tr:nth-child(2n){
+	background: #ddd;
+}
+tbody tr:nth-child(-n+3){
+	color:red;
+}
+
+input.transition{
+	transition: width .5s;
+	width:100px;
+
+}
+input.transition:hover{
+	width:200px;
+
+}
+
+.btn a{
+	display: inline-block;
+	pad
+	position: absolute;
+	border:1px solid #ddd;
+}
+.banner {
+  width: 250px;
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+  background-color: red;
+}

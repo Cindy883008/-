@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+</head>
+
+<body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <style >
+        #ul li{
+            display:inline-block;
+            background-color:#F00;
+            color:#000;
+            margin:4px;
+            padding:1px;
+            width: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <input type="text" id="input" placeholder="请输入数字"   />
+    <button type="button" id="leftin">左侧入</button>&nbsp;
+    <button type="button" id="rightin">右侧入</button>&nbsp;&nbsp;&nbsp;
+    <button type="button" id="leftout">左侧出</button>&nbsp;
+    <button type="button" id="rightout">右侧出</button>
+    <button type="button" id="sort">排序</button>
+</div>
+<div>
+    <ul id="ul">  </ul>
+</div>
+
+<script type="text/javascript">
+    /*
+     获得每个按钮的输入id
+     */
+    var input = document.getElementById('input');
+    var leftin = document.getElementById('leftin');
+    var rightin = document.getElementById('rightin');
+    var leftout = document.getElementById('leftout');
+    var rightout = document.getElementById('rightout');
+    var ul = document.getElementById('ul');
+    var sort =document.getElementById('sort');
+    var arr =new Array(); // 建立一个数组
+    /*
+     checkInput(num)
+     检查输入的格式，输入不能为空；输入10~100之间的整数
+     */
+    function checkInput(num) {
+        var reg = /^\d*$/;
+        if (num === '') {
+            alert("输入不能为空");
+            return false;
+        } else if (!reg.test(num)) {
+            alert("请输入数字");
+            input.value ='';
+            return false;
+        } else if (!(num >= 10 && num <= 100)) {
+            alert("请输入10~100之间的整数");
+            input.value ='';
+            return false;
+        }
+        return true;
+
+    }
+    /*
+     inleft()
+     点击左侧入，将input 的数据从左侧插入
+     数据以柱状图表示出来
+     显著输入少于60
+     */
+    function inleft(){
+
+        var num = input.value;
+        if( checkInput(num)){
+
+            arr.unshift(num);
+            var li=document.createElement('li');
+            //li.innerHTML = arr[0];
+            li.style.height = num +'px';
+            if (arr.length > 60){
+                alert ('最多可插入60个数字')}
+            else{
+                ul.insertBefore(li,ul.childNodes[0]);
+                input.value = '';
+            }
+        }
+    }
+    /*
+     inright()
+     点击右侧入，将input 的数据从右侧插入数据
+     数据以柱状图表示出来
+     显著输入少于60
+     */
+    function inright(){
+
+        var num =input.value;
+        if( checkInput(num)){
+            arr.push(num);
+            var li=document.createElement('li');
+            // li.innerHTML = arr[arr.length-1];
+            li.style.height = num +'px';
+            if (arr.length > 60){
+                alert ('最多可插入60个数字')}
+            else{
+                ul.appendChild(li);
+                input.value = '';
+            }
+        }
+    }
+    /*
+     outleft()
+     点击左侧出，将数据从左端删除
+     */
+    function outleft(){
+        arr.shift(ul.childNodes[0].innerHTML);
+        ul.removeChild(ul.childNodes[0]);
+        input.value = '';
+    }
+    /*
+     outright()
+     点击右侧出，将数据从右端删除
+     */
+    function outright(){
+        arr.pop(ul.lastChild.innerHTML);
+        ul.removeChild(ul.lastChild);
+        input.value = '';
+    }
+    /*
+     sortnum(arr)
+     对数组进行排序
+     */
+    function sortnum(arr){
+        if(arr.length <= 1) {
+            return arr
+        }
+        for(var i=0; i<arr.length; i++) {
+            for(var j=i-1; j>=0; j--) {
+                if(arr[j+1] < arr[j]) {
+                    var temp = arr[j+1];
+                    arr[j+1] = arr[j];
+                    arr[j] = temp
+                }
+            }
+        }
+        return arr
+    }
+
+    function run(){
+        leftin.onclick = function(){
+            inleft();
+        }
+
+        rightin.onclick = function(){
+            inright();
+        }
+        leftout.onclick = function(){
+            outleft();
+        }
+        rightout.onclick = function(){
+            outright();
+        }
+
+        /*
+         点击队列中的数据删除该数据
+         */
+        ul.onclick = function (e) {
+            e = e || window.event;
+            var t = e.target || e.srcElement;  //t:目标对象
+            var tagName = t.tagName;　//tagName标签名称
+
+            var ul_lis=ul.getElementsByTagName('li');//获得对列中的Li元素
+
+            /*
+             给对列中的每个li元素一个索引的值，方便从数组中删除该数据；
+             */
+            for (var i = 0;i < ul_lis.length; i++) {
+                ul_lis[i].index = i;
+            }
+            if (tagName == 'LI') {
+                ul.removeChild(t);
+                arr.splice(t.index,1);
+            }
+        }
+        /*
+         点击排序，将队列中的数据进行排序
+         */
+        sort.onclick =function(){
+            arr = sortnum(arr);
+            ul.innerHTML = "";
+            for(var k = 0; k < arr.length; k++){     //显示排序后的结果
+                var li = document.createElement("li");
+                li.style.height = arr[k] + "px";
+                ul.appendChild(li);
+            }
+
+        }
+    }
+    run();
+
+
+</script>
+</body>
+</html>
+
+</body>
+</html>
